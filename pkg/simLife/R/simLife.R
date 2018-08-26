@@ -260,80 +260,6 @@ simTimes <- function(S, param, vickers, stress, verbose = FALSE) {
 	return ( CLT )
 }
 
-.VV <- function(S,box) {
-	sum(unlist(lapply(S,
-	 function(x) 4/3*pi*x$acb[1]*x$acb[2]*x$acb[3])))/(box$xrange[2] * box$yrange[2] * box$zrange[2])
-}
-
-
-#' Simulate particle system (primary phase)
-#'
-#' Poisson spheroid system
-#'
-#' The function generates a constant size Poisson spheroid system with intensity parameter \code{lam}
-#' and random planar (with respect to the xz plane) orientation distribution. The spheroids are labeled
-#' by \eqn{P} to denote the primary particle phase which usually plays the role of some reinforcement
-#' material type in real life specimen. In order to simulate the fatigue lifetime model, see \code{\link{simDefect}},
-#' a non-overlapping configuration of particles is required which could be generated for instance by application of
-#' the the well-known random sequential adsorption (RSA) method, see \code{\link{rsa}}. Alternatively the Force-biased
-#' algorithm could be used as well, see reference below.
-#'
-#' @param theta   simulation parameter list
-#' @param lam 	  intensity parameter of the underlying Poisson point process
-#' @param box	  the simulation box
-#' @param mu	  reference direction of particles, here \code{mu=c(0,0,1)} (default)
-#' @param type    type of grain, either "\code{prolate}" or "\code{oblate}" as a particle
-#' @param verbose logical, \code{FALSE} (default), whether to print verbose output
-#'
-#' @return 	list of spheroids
-#' @references  \itemize{
-#' 				  \item{}{A. Bezrukov and D. Stoyan. Simulation and statistical analysis of random packings of ellipsoids. Particle & Particle Systems Characterization, 23(5):388 - 398, 2006.}
-#' 				  \item{}{J.W. Evans. Random and cooperative sequential adsorption. Rev. Mod. Phys., 65: 1281-1304. 1993.}
-#' 				}
-#' @seealso \code{\link{simPoissonSystem}}
-#' 
-#' @author M. Baaske 
-#' @rdname simParticle
-#' @export
-simParticle <- function(theta,lam,box,mu=c(0,0,1),type=c("prolate","oblate"),verbose=FALSE) {
-	S <- unfoldr::simPoissonSystem(theta,lam,size="const",orientation="rbetaiso",
-			        type=type,box=box,mu=mu,pl=as.integer(verbose),label=as.character("P"))
-	
-	if(verbose) {
-      cat("V_V: ",.VV(S,box),"\n")
-	}
-	return (S)
-}
-
-#' Simulate a second phase
-#'
-#' Poisson spheroid system
-#'
-#' The function generates a system of constant size Poisson spheroidal objects with intensity \code{lam} and random planar
-#' orientation distribution. The spheroidal objects are labeled by \eqn{F} to denote the secondary
-#' particle phase, denoting for instance some disturbing ferrit inclusions in real life specimen.
-#'
-#' @param param    simulation parameter list
-#' @param lam 	   the intensity parameter of the underlying Poisson point process
-#' @param box	   the simulation box
-#' @param mu	   reference direction of particles, here \code{mu=c(0,0,1)} (default)
-#' @param verbose  logical, \code{FALSE} (default), whether to print verbose output
-#'
-#' @return 	list of spheroids
-#' @seealso \code{\link[unfoldr]{simPoissonSystem}}
-#' 
-#' @author M. Baaske 
-#' @rdname simFerrit
-#' @export
-simFerrit <- function(param, lam, box, mu=c(0,0,1), type=c("spheres"),verbose = FALSE) {
-	F <- unfoldr::simPoissonSystem(param,lam=lam,size="const",orientation="rbetaiso",
-			        type=type,box=box,mu=mu,pl=as.integer(verbose),label=as.character("F"))
-	if(verbose) {
-    	cat("V_V: ",.VV(F,box),"\n")
-	}
-	return (F)
-}
-
 #' Critical area
 #'
 #' Calculate critical area
@@ -715,7 +641,8 @@ plotDefectAcc <- function(CL,last.path=FALSE,log.axis="x",use.col=TRUE,main="",.
 #' @author M. Baaske 
 #' @rdname woehler
 #' @export
-woehler <- function(S, CL, param, opt, stress, fun = lapply, cl = NULL) {
+woehler <- function(S, CL, param, opt, stress, fun = lapply, cl = NULL)
+{
 	simF <- function(s,...) simFracture(s,...,last.defect=TRUE)$cl_info
 
 	#if(parallel.option=="mclapply" && !requireNamespace("parallel", quietly=TRUE))

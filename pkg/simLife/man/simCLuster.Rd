@@ -4,25 +4,21 @@
 \alias{simCluster}
 \title{Generate clustered regions}
 \usage{
-simCluster(S, theta, lam, box, cond = list(eps = 0, minSize = 1),
-  check_overlap = FALSE, verbose = FALSE, pl = 0)
+simCluster(S, CL, cond = list(eps = 0, minSize = 1L),
+  check_overlap = FALSE, verbose = FALSE, pl = 0L)
 }
 \arguments{
 \item{S}{(non-overlapping) geometry objects system}
 
-\item{theta}{list of simulation parameter}
-
-\item{lam}{the intensity parameter of the underlying Poisson process}
-
-\item{box}{the simulation box}
+\item{CL}{cluster regions, i.e. objects of class '\code{spheres}', possibly overlapping}
 
 \item{cond}{conditioning object for cluster algorithm, see details}
 
-\item{check_overlap}{logical, \code{check_overlap=FALSE} (default) overlapping spheres}
+\item{check_overlap}{logical, whether spheres are allowed to overlapp, \code{check_overlap=FALSE} (default)}
 
-\item{verbose}{logical, \code{verbose=FALSE} (default) additional information}
+\item{verbose}{logical, verbose output, \code{verbose=FALSE} (default)}
 
-\item{pl}{integer, \code{pl=0} for no additional information}
+\item{pl}{integer, \code{pl>0} for printing information}
 }
 \value{
 a list of the following element:
@@ -35,11 +31,14 @@ a list of the following element:
 						}
 }
 \description{
-Simulate regions of clustered objects
+Construct regions of clustered objects
 }
 \details{
-The functions generates a random non-overlapping ball configuration
-by the RSA method with some radius defined by the parameter list \code{theta}.
+The function takes a non-overlapping system of spheres, cylinders, spheroids of type "\code{prolate}" or "\code{oblate}
+and a random ball configuration \code{CL} of class "\code{spheres}" which defines clustered regions of the objects given
+in \code{S} according to the minimum required distance \code{eps} between these objects and a number of objects required
+in that region by \code{minSize} in the list \code{cond}. The function \code{\link{rsa}} is internally called if
+\code{check_overlap=TRUE} in order to make these cluster regions non-overlapping.
 }
 \examples{
 \dontrun{
@@ -66,7 +65,7 @@ param <- list("size"=list(0.075), "shape"=list("s"=0.75),"orientation"=list("kap
 F  <- simFerrit(param,lam=2,box=box,mu=c(0,1,0)) 
 
 # apply RSA, this may take some 
-RSA <- rsa(S, box, F=F, pl = 10)
+RSA <- rsa(S, F=F, pl = 10)
 
 ## show 3d spheroids (non-overlapping)
 # cols <- c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF")

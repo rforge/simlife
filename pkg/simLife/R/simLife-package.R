@@ -40,7 +40,6 @@
 #' @importFrom grDevices chull
 #' @importFrom stats na.omit quantile rnorm runif rweibull
 #' @importFrom graphics abline axTicks axis box legend plot points segments
-#' @importFrom unfoldr simPoissonSystem updateIntersections
 #' 
 #' @useDynLib simLife, .registration = TRUE, .fixes = "C_"
 NULL

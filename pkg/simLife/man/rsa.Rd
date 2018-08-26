@@ -4,12 +4,10 @@
 \alias{rsa}
 \title{Random sequential adsorption (RSA)}
 \usage{
-rsa(S, box, F = NULL, pl = 0, verbose = TRUE)
+rsa(S, F = NULL, pl = 0, verbose = TRUE)
 }
 \arguments{
 \item{S}{overlapping geometry system}
-
-\item{box}{simulation box}
 
 \item{F}{secondary phase objects as list}
 

@@ -27,7 +27,6 @@
 #' iterations is reached. This function is most suited for volume fractions less than 0.15.
 #'
 #' @param S 			overlapping geometry system
-#' @param box			simulation box
 #' @param F 			secondary phase objects as list
 #' @param pl			integer: if \code{pl>0} give some intermediate results
 #' @param verbose       logical: if \code{verbose=TRUE} (default) show additional information
@@ -38,19 +37,22 @@
 #' @references
 #'	 J.W. Evans. Random and cooperative sequential adsorption. Rev. Mod. Phys., 65: 1281-1304, 1993.
 #' @export
-rsa <- function(S, box, F = NULL, pl = 0, verbose = TRUE) UseMethod("rsa", S)
+rsa <- function(S, F = NULL, pl = 0, verbose = TRUE) UseMethod("rsa", S)
 
 
 #' @method rsa oblate
 #' @export
-rsa.oblate <- function(S, box, F = NULL, pl = 0, verbose = TRUE) {
-	rsa.prolate(S,box,F,pl,verbose)
+rsa.oblate <- function(S, F = NULL, pl = 0, verbose = TRUE) {
+	rsa.prolate(S,F,pl,verbose)
 }
 
 
 #' @method rsa prolate
 #' @export
-rsa.prolate <- function(S, box, F = NULL, pl = 0, verbose = TRUE) {
+rsa.prolate <- function(S, F = NULL, pl = 0, verbose = TRUE) {
+	box <- attr(S,"box")
+	if(is.null(box))
+		stop("Could not find attribute 'box'.")
 	# combine spheroids and ferrit particles
 	if(!is.null(F)) {
 		if(class(F)!=class(S))
@@ -71,7 +73,7 @@ rsa.prolate <- function(S, box, F = NULL, pl = 0, verbose = TRUE) {
 	  message(paste("Target volume fraction is ",p," which is quite large for RSA algorithm.\n
 		Algorithm may terminate successfully (but very slowly) or even fail totally.\n",sep=""))
 
-	D <- 2.0*max(unlist(lapply(S, function(s) max(s$ab))))           # overall maximum axis length
+	D <- 2.0*max(unlist(lapply(S, function(s) max(s$acb))))           # overall maximum axis length
 	FUN <- .checkOverlap
 
 	return (.rsaPeriodic(S,box,FUN,D,pl))
@@ -79,13 +81,16 @@ rsa.prolate <- function(S, box, F = NULL, pl = 0, verbose = TRUE) {
 
 #' @method rsa cylinder
 #' @export
-rsa.cylinder <- function(S, box, F = NULL, pl = 0, verbose = TRUE) {
+rsa.cylinder <- function(S, F = NULL, pl = 0, verbose = TRUE) {
+	box <- attr(S,"box")
+	if(is.null(box))
+		stop("Could not find attribute 'box'.")
 	v <- sum(sapply(S, function(x) pi*x$r^2*x$length + 4/3*pi*x$r^3 ))
 	if(!is.null(F)) {
-		if(!(class(F) %in% c("cylinder","sphere")))
+		if(!(class(F) %in% c("cylinders","spheres")))
 		 stop(paste0("Trying to pack objects of different types -> exiting."))
 	 	n <- length(S)
-	 	if(class(F) == "sphere") {
+	 	if(class(F) == "spheres") {
 		  for(i in 1:length(F)) {
 			 F[[i]]$id <- i+n
 			 # dummies to treat sphere as cylinder
@@ -125,7 +130,10 @@ rsa.cylinder <- function(S, box, F = NULL, pl = 0, verbose = TRUE) {
 
 #' @method rsa sphere
 #' @export
-rsa.sphere <- function(S, box, F = NULL, pl = 0, verbose = TRUE) {
+rsa.sphere <- function(S, F = NULL, pl = 0, verbose = TRUE) {
+	box <- attr(S,"box")
+	if(is.null(box))
+		stop("Could not find attribute 'box'.")
 	if(!is.null(F)) {
 		if(class(F)!=class(S))
 			stop(paste0("Trying to pack objects of different types -> exiting."))

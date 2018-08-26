@@ -68,7 +68,7 @@ param <- list("size"=list(0.075), "shape"=list("s"=0.75),"orientation"=list("kap
 F  <- simFerrit(param,lam=2,box=box,mu=c(0,1,0)) 
 
 # apply RSA, this may take some 
-RSA <- rsa(S, box, F=F, pl = 10)
+RSA <- rsa(S, F=F, pl = 10)
 
 ## show 3d spheroids (non-overlapping)
 # cols <- c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF")

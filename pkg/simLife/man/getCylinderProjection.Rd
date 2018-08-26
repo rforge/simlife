@@ -33,6 +33,7 @@ projected fiber (spherocylinder).
 
 ## Not on MS-Windows	
 #library("parallel")
+
 #options(mc.cores=detectCores())
 #options(parallel.option="mclapply")
 

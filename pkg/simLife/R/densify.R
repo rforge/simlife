@@ -1,6 +1,6 @@
 # translate angle to [0,pi/2]
 .getAngle <- function(phi) {
-	if(phi<=pi/2 ) phi
+	if(phi<=pi/2) phi
 	else {
 		if( phi <=pi) pi-phi
 		else if(phi<1.5*pi) phi%%(pi)
@@ -10,7 +10,8 @@
 
 # get the correct spheroid (rotation-size) matrix
 .getA <- function(s) {
-	A <- matrix(c(1.0/s$ab[1]^2,0,0,0,1.0/s$ab[1]^2,0,0,0,1.0/s$ab[2]^2),nrow=3)
+	#A <- matrix(c(1.0/s$ab[1]^2,0,0,0,1.0/s$ab[1]^2,0,0,0,1.0/s$ab[2]^2),nrow=3)
+	A <- diag(c(1.0/s$acb[1]^2,1.0/s$acb[2]^2,1.0/s$acb[3]^2))
 	return (t(s$rotM) %*% A %*% s$rotM)
 }
 
@@ -150,19 +151,20 @@
 
 #' Generate clustered regions
 #'
-#' Simulate regions of clustered objects
+#' Construct regions of clustered objects
 #'
-#' The functions generates a random non-overlapping ball configuration
-#' by the RSA method with some radius defined by the parameter list \code{theta}.
+#' The function takes a non-overlapping system of spheres, cylinders, spheroids of type "\code{prolate}" or "\code{oblate}
+#' and a random ball configuration \code{CL} of class "\code{spheres}" which defines clustered regions of the objects given
+#' in \code{S} according to the minimum required distance \code{eps} between these objects and a number of objects required
+#' in that region by \code{minSize} in the list \code{cond}. The function \code{\link{rsa}} is internally called if
+#' \code{check_overlap=TRUE} in order to make these cluster regions non-overlapping.
 #'
 #' @param S				(non-overlapping) geometry objects system
-#' @param theta 		list of simulation parameter
-#' @param lam			the intensity parameter of the underlying Poisson process
-#' @param box			the simulation box
+#' @param CL			cluster regions, i.e. objects of class '\code{spheres}', possibly overlapping
 #' @param cond			conditioning object for cluster algorithm, see details
-#' @param check_overlap	logical, \code{check_overlap=FALSE} (default) overlapping spheres
-#' @param verbose 		logical, \code{verbose=FALSE} (default) additional information
-#' @param pl		    integer, \code{pl=0} for no additional information
+#' @param check_overlap	logical, whether spheres are allowed to overlapp, \code{check_overlap=FALSE} (default)
+#' @param verbose 		logical, verbose output, \code{verbose=FALSE} (default)
+#' @param pl		    integer, \code{pl>0} for printing information
 #'
 #' @return 				a list of the following element:
 #' 					    \itemize{
@@ -172,47 +174,47 @@
 #' 							\item{interior}{ equals to \code{0} if any of the enclosed ball objects
 #' 								hit the boundaries of the simulation box and equals \code{1} otherwise}
 #' 						}
+#' 
 #' @example inst/examples/densify.R
 #' 
 #' @author M. Baaske 
 #' @rdname simCLuster
 #' @export
-simCluster <- function(S, theta, lam, box, cond = list("eps"=0,"minSize"=1),
-				check_overlap = FALSE, verbose = FALSE, pl = 0)
+simCluster <- function(S, CL, cond = list("eps" = 0.0, "minSize" = 1L),
+				check_overlap = FALSE, verbose = FALSE, pl = 0L)
 {
 	# check arguments for 'cond'
 	it <- match(names(cond), c("eps","minSize"))
 	if (anyNA(it))
-		stop("Expected 'cond' as named list of arguments: 'eps','minSize'")
-	it <- match(names(theta), c("r"))
-	if (anyNA(it))
-		stop("Expected 'theta' as list of named arguments.")
-	
-	sp <- unfoldr::simPoissonSystem(theta,lam,size="const",type="spheres",
-			box=box,pl=1,label=as.character("C"))
+	 stop("Expected 'cond' as named list of arguments: 'eps','minSize'")
+		
+	#sp <- unfoldr::simPoissonSystem(theta,lam,size="const",type="spheres",
+	#		box=box,pl=1,label=as.character("C"))
 	
 	# apply rsa
-	if(check_overlap) sp <- rsa(sp,box,pl=pl,verbose=verbose)
+	if(check_overlap){
+	  CL <- rsa(CL,pl=pl,verbose=verbose)
+    }
+	
 	# call clustering algorithm
-	.Call(C_Cluster,sp,S,cond)
+	.Call(C_Cluster,CL,S,cond)
 }
 
 .update <- function(A) UseMethod(".update",A)
 .update.cylinder <- function(A) {
 	i <- .checkEn(A,.checkOverlapCylinder)
 	if(length(i)>0)
-		warning(paste("Overlaps detected in cluster ",unlist(i),"
-				 after call to 'densify'. Consider to increase the weight parameter as a penalty.",sep=""))
-	# update interior
-	ids <- unfoldr::updateIntersections(A)
+		warning(paste("Overlaps detected in cluster ",unlist(i)," after call to 'densify'.Try to increase the weight parameter and re-run.", sep=""))
+	## update interior
+	#ids <- unfoldr::updateIntersections(A)
 	for(k in 1:length(A)) {
 		# update origin0/origin1
 		m <- 0.5*A[[k]]$length*A[[k]]$u
 		A[[k]]$origin0 <- A[[k]]$center + m
 		A[[k]]$origin1 <- A[[k]]$center - m
-		attr(A[[k]],"interior") <- as.logical(ids[k])
+		#attr(A[[k]],"interior") <- as.logical(ids[k])
 	}
-	attr(A,"interior") <- all(as.logical(ids))
+	#attr(A,"interior") <- all(as.logical(ids))
 	return (A)
 }
 
@@ -227,26 +229,29 @@ simCluster <- function(S, theta, lam, box, cond = list("eps"=0,"minSize"=1),
 .update.prolate <- function(A) {
 	i <- .checkEn(A,.checkOverlap)
 	if(length(i)>0)
-		warning(paste("Overlaps detected in cluster ",unlist(i),"
-  		after call to 'densify'. Consider to increase the weight parameter as a penalty.",sep=""))
-	# update interior
-	ids <- unfoldr::updateIntersections(A)
-	for(k in 1:length(A))
-	 attr(A[[k]],"interior") <- as.logical(ids[k])
-	attr(A,"interior") <- all(as.logical(ids))
+	 warning(paste("Overlaps detected in cluster ",unlist(i)," after call to 'densify'. Try to increase the weight parameter and re-run.",sep=""))
+	
+    ## changes in current version:
+	## test on intersection of objects with lateral planes 
+	## now only provided by package 'unfoldr' as update interior
+	# ids <- unfoldr::updateIntersections(A)
+	
+	#for(k in 1:length(A))
+	# attr(A[[k]],"interior") <- as.logical(ids[k])
+	# attr(A,"interior") <- all(as.logical(ids))
 	return (A)
 }
 
 .update.sphere <- function(A) {
 	i <- .checkEn(A,.checkOverlapSphere)
 	if(length(i)>0)
-		warning(paste("Overlaps detected in cluster ",unlist(i),"
-		 after call to 'densify'. Consider to increase the weight parameter as a penalty.",sep=""))
-	# update interior
-	ids <- unfoldr::updateIntersections(A)
-	for(k in 1:length(A))
-		attr(A[[k]],"interior") <- as.logical(ids[k])
-	attr(A,"interior") <- all(as.logical(ids))
+		warning(paste("Overlaps detected in cluster ",unlist(i)," after call to 'densify'.Try to increase the weight parameter and re-run.", sep=""))
+	
+    ## see above: update interior
+	# ids <- unfoldr::updateIntersections(A)
+	# for(k in 1:length(A))
+	#  attr(A[[k]],"interior") <- as.logical(ids[k])
+	# attr(A,"interior") <- all(as.logical(ids))
 	return (A)
 }
 
@@ -285,7 +290,9 @@ simCluster <- function(S, theta, lam, box, cond = list("eps"=0,"minSize"=1),
 densifyCluster <- function(F, CL, box, ctrl, weight = 10, info = FALSE, fun = lapply, cl = NULL) {
 	if(!requireNamespace("GenSA", quietly=TRUE))
 	  stop("package 'GenSA' is required to run this function.")
-	densify <- function(L,box,ctrl,weight,FUNCTION) {
+	
+     densify <- function(L,box,ctrl,weight,FUNCTION)
+	 {
 		S <- L$S
 		dim <- length(S)
 		clust <- L$clust
@@ -311,10 +318,10 @@ densifyCluster <- function(F, CL, box, ctrl, weight = 10, info = FALSE, fun = la
 	if(attr(F,"class")=="prolate" || attr(F,"class")=="oblate") {
 		FUN <- .EnSpheroid
 	}
-	else if(attr(F,"class")=="cylinder") {
+	else if(attr(F,"class")=="cylinders") {
 		FUN <- .EnCylinder
 	}
-	else if(attr(F,"class")=="sphere") {
+	else if(attr(F,"class")=="spheres") {
 		FUN <- .EnSphere
 	}
 	else { stop("Unknow object type. --> exiting.")}
@@ -344,11 +351,12 @@ densifyCluster <- function(F, CL, box, ctrl, weight = 10, info = FALSE, fun = la
 						error=simpleError(.makeMessage("Cluster construction failed.\n")))
 		 }
 	)
+	
 	if(length(A)>0) {
 		# check overlap and update
 		cl.name <- class(F)
 		for(i in 1:length(A)) {
-			class(A[[i]]) <- cl.name
+			class(A[[i]]) <- cl.name		
 			A[[i]] <- .update(A[[i]])
 		}
 		# copy to original system objects
@@ -361,8 +369,7 @@ densifyCluster <- function(F, CL, box, ctrl, weight = 10, info = FALSE, fun = la
 			})
 		)
 	} else {
-		message("There are no particles in the randomly generated  clusters.\n
-                  Consider to increase the cluster radius.\n")
+		message("There are no particles in the randomly generated clusters. Consider to increase the cluster radius.\n")
 	}
 	return ( list("S" = F, "cluster" = A ) )
 }
