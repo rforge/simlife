@@ -1,0 +1,11 @@
+PKG_LIBS =  $(LAPACK_LIBS) $(BLAS_LIBS) $(FLIBS) $(SHLIB_OPENMP_CFLAGS)
+PKG_CFLAGS = $(SHLIB_OPENMP_CFLAGS)
+
+#PKG_CFLAGS = -Wall -pedantic $(SHLIB_OPENMP_CFLAGS)
+#PKG_CPPFLAGS = -Wall -Wextra -pedantic -O0 -ggdb
+
+OBJECTS = cluster.o GeometricPrimitives.o convert.o simLife.o 
+
+all: $(SHLIB) cleanlibs
+cleanlibs:
+	-rm -f $(OBJECTS)
