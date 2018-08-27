@@ -4,15 +4,13 @@
 \alias{densifyCluster}
 \title{Densify clusters}
 \usage{
-densifyCluster(F, CL, box, ctrl, weight = 10, info = FALSE,
-  fun = lapply, cl = NULL)
+densifyCluster(F, CL, ctrl, weight = 10, info = FALSE, fun = lapply,
+  cl = NULL)
 }
 \arguments{
 \item{F}{non-overlapping particle system}
 
 \item{CL}{cluster list, defining the different cluster regions}
-
-\item{box}{simulation box}
 
 \item{ctrl}{control arguments passed to function \code{GenSA}}
 

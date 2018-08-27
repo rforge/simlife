@@ -18,7 +18,7 @@ woehler(S, CL, param, opt, stress, fun = lapply, cl = NULL)
 \item{stress}{list of stress levels}
 
 \item{fun}{optional, if \code{fun=mclapply} use \code{\link[parallel]{mclapply}}
-for to parallelize simulations}
+for simulations}
 
 \item{cl}{optional, parallel cluster object, see 'snow'}
 }
