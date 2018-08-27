@@ -7,10 +7,9 @@
 #' 	 \item{id}{ the current cluster id}
 #' 	 \item{center}{ the center of ball which defines the cluser region}
 #' 	 \item{u}{ the orientation vector of spheroid's rotational symmetry axis}
-#' 	 \item{ab}{ the axes length}
-#' 	 \item{angles}{ colatitude and longitude angle}
+#' 	 \item{acb}{ two shorter semi-axis lengths and major semi-axis length}
+#' 	 \item{angles}{ polar angle and azimuthal angle}
 #' 	 \item{rotM}{ rotational matrix, center of rotation is the center of the spheroid}
-#' 	 \item{radius}{ attribute, random radius of perfect simulation, if enabled}
 #' 	 \item{interior}{ attribute, whether the spheroid lies in the interior of the simulation box}
 #' 	 \item{label}{ attribute, character, user defined label, here: 'P' (particle) or 'F' (ferrit)}
 #'   \item{area}{ attribute, the projected area}
@@ -53,9 +52,8 @@ NULL
 #'   \item{length}{ length/height of cylinder without radii of caps}
 #' 	 \item{u}{ orientation vector of spheroid's rotational symmetry axis}
 #' 	 \item{r}{ radius of cylinder}
-#' 	 \item{angles}{ colatitude and longitude angle}
+#' 	 \item{angles}{ two shorter semi-axis lengths and major semi-axis length}
 #' 	 \item{rotM}{ rotational matrix, center of rotation is the center of the spheroid}
-#' 	 \item{radius}{ attribute, random radius of perfect simulation, if enabled}
 #' 	 \item{interior}{ attribute, whether the spheroid lies in the interior of the simulation box}
 #' 	 \item{label}{ attribute, character, user defined label, here: 'P' (particle) or 'F' (ferrit)}
 #'   \item{area}{ attribute, the projected area}
@@ -630,7 +628,7 @@ plotDefectAcc <- function(CL,last.path=FALSE,log.axis="x",use.col=TRUE,main="",.
 #' @param opt			   control parameters, see \code{\link{simTimes}}
 #' @param stress		   list of stress levels
 #' @param fun 			   optional, if \code{fun=mclapply} use \code{\link[parallel]{mclapply}}
-#' 						     for to parallelize simulations
+#' 						     for simulations
 #' @param cl			   optional, parallel cluster object, see 'snow'
 #'
 #' @return				   matrix of failure times, first colunm corresponds to the times
@@ -645,16 +643,11 @@ woehler <- function(S, CL, param, opt, stress, fun = lapply, cl = NULL)
 {
 	simF <- function(s,...) simFracture(s,...,last.defect=TRUE)$cl_info
 
-	#if(parallel.option=="mclapply" && !requireNamespace("parallel", quietly=TRUE))
-	#	stop("package 'parallel' is required to run this function in parallel mode.")
-	#fun <- get(parallel.option)
-
 	p <- tryCatch({
 			if(!is.null(cl)) {
 				m <- min(length(stress),length(cl))
 				if(any(class(cl) %in% c("MPIcluster","SOCKcluster","cluster"))) {
-					cat("Using MPI cluster...\n")
-					parallel::parLapplyLB(cl[seq_len(m)], stress, simF, opt=opt, param=param, CL=CL, S=S)
+				 parallel::parLapply(cl[seq_len(m)], stress, simF, opt=opt, param=param, CL=CL, S=S)
 				}
 			} else {
 	 			fun(stress, simF, opt=opt, param=param, CL=CL, S=S)

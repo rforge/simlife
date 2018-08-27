@@ -10,7 +10,7 @@ Author: Markus Baaske [aut, cre], Felix Ballani [aut, ctb]
 Maintainer: Markus Baaske <markus.baaske@math.tu-freiberg.de>
 Description: Provides methods for simulation and analysis of a very general fatigue
 			 lifetime model for (metal matrix) composite materials.
-Depends: R (>= 3.1.0), unfoldr(>= 0.6.8)
+Depends: R (>= 3.1.0)
 Imports: grDevices, graphics, stats, splancs
 Suggests: rgl, lattice, GenSA, parallel
 License: GPL (>= 3)

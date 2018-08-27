@@ -47,8 +47,8 @@
 	d <- .C(C_sdm,as.numeric(q$center-p$center),
 			as.numeric(q$u),
 			as.numeric(p$u),
-			as.numeric(q$length*0.5),
-			as.numeric(p$length*0.5),
+			as.numeric(q$h*0.5),
+			as.numeric(p$h*0.5),
 			d=numeric(1))$d
 
 	return ( d < ((q$r+p$r)^2 - 1e-10))	
@@ -102,8 +102,8 @@
 	d <- p$center-q$center
 	rmax <- .C(C_ContactRadius,
 			    as.numeric(p$u),
-				as.numeric(p$length*0.5),
-				as.numeric(q$length*0.5),
+				as.numeric(p$h*0.5),
+				as.numeric(q$h*0.5),
 				as.numeric(p$r),
 				as.numeric(q$r),
 				as.numeric(invR),
@@ -201,19 +201,22 @@ simCluster <- function(S, CL, cond = list("eps" = 0.0, "minSize" = 1L),
 }
 
 .update <- function(A) UseMethod(".update",A)
-.update.cylinder <- function(A) {
+.update.cylinders <- function(A) {
 	i <- .checkEn(A,.checkOverlapCylinder)
 	if(length(i)>0)
-		warning(paste("Overlaps detected in cluster ",unlist(i)," after call to 'densify'.Try to increase the weight parameter and re-run.", sep=""))
+		warning(paste("Overlaps detected in cluster:",paste0("",unlist(i),".",collapse=","),"Consider to increase weight parameter and re-run the densification."))
+	
 	## update interior
 	#ids <- unfoldr::updateIntersections(A)
+	
 	for(k in 1:length(A)) {
 		# update origin0/origin1
-		m <- 0.5*A[[k]]$length*A[[k]]$u
+		m <- 0.5*A[[k]]$h*A[[k]]$u
 		A[[k]]$origin0 <- A[[k]]$center + m
 		A[[k]]$origin1 <- A[[k]]$center - m
 		#attr(A[[k]],"interior") <- as.logical(ids[k])
 	}
+	
 	#attr(A,"interior") <- all(as.logical(ids))
 	return (A)
 }
@@ -229,7 +232,7 @@ simCluster <- function(S, CL, cond = list("eps" = 0.0, "minSize" = 1L),
 .update.prolate <- function(A) {
 	i <- .checkEn(A,.checkOverlap)
 	if(length(i)>0)
-	 warning(paste("Overlaps detected in cluster ",unlist(i)," after call to 'densify'. Try to increase the weight parameter and re-run.",sep=""))
+		warning(paste("Overlaps detected in cluster:",paste0("",unlist(i),".",collapse=","),"Consider to increase weight parameter and re-run the densification."))
 	
     ## changes in current version:
 	## test on intersection of objects with lateral planes 
@@ -242,11 +245,12 @@ simCluster <- function(S, CL, cond = list("eps" = 0.0, "minSize" = 1L),
 	return (A)
 }
 
-.update.sphere <- function(A) {
+.update.spheres <- function(A) {
 	i <- .checkEn(A,.checkOverlapSphere)
 	if(length(i)>0)
-		warning(paste("Overlaps detected in cluster ",unlist(i)," after call to 'densify'.Try to increase the weight parameter and re-run.", sep=""))
-	
+	 warning(paste("Overlaps detected in cluster:",paste0("",unlist(i),".",collapse=","),"Consider to increase weight parameter and re-run the densification."))
+			
+ 
     ## see above: update interior
 	# ids <- unfoldr::updateIntersections(A)
 	# for(k in 1:length(A))
@@ -272,7 +276,6 @@ simCluster <- function(S, CL, cond = list("eps" = 0.0, "minSize" = 1L),
 #'
 #' @param F					non-overlapping particle system
 #' @param CL				cluster list, defining the different cluster regions
-#' @param box				simulation box
 #' @param ctrl  			control arguments passed to function \code{GenSA}
 #' @param weight   			optional: weight factor \code{weight=10} (default)
 #' @param info			    optional: logical, if TRUE return result from \code{GenSA} call
@@ -287,12 +290,17 @@ simCluster <- function(S, CL, cond = list("eps" = 0.0, "minSize" = 1L),
 #' @author M. Baaske 
 #' @rdname densifyCluster
 #' @export
-densifyCluster <- function(F, CL, box, ctrl, weight = 10, info = FALSE, fun = lapply, cl = NULL) {
+densifyCluster <- function(F, CL, ctrl, weight = 10, info = FALSE, fun = lapply, cl = NULL) {
 	if(!requireNamespace("GenSA", quietly=TRUE))
 	  stop("package 'GenSA' is required to run this function.")
-	
-     densify <- function(L,box,ctrl,weight,FUNCTION)
-	 {
+  	
+    # get simulation box
+  	box <- attr(F,"box")
+  	if(is.null(box))
+	  stop("Could not find attribute 'box' in `",as.character(substitute(F)),"`.")
+    
+  	densify <- function(L,box,ctrl,weight,FUNCTION)
+	{
 		S <- L$S
 		dim <- length(S)
 		clust <- L$clust
