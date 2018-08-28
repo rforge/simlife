@@ -12,7 +12,7 @@ Description: Provides methods for simulation and analysis of a very general fati
 			 lifetime model for (metal matrix) composite materials.
 Depends: R (>= 3.1.0)
 Imports: grDevices, graphics, stats, splancs
-Suggests: rgl, lattice, GenSA, parallel
+Suggests: rgl, lattice, GenSA, unfoldr, parallel
 License: GPL (>= 3)
 Repository: CRAN
 LazyData: yes
