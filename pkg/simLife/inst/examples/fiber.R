@@ -1,3 +1,6 @@
+# remove!
+\dontrun{
+	
 ## Simulate a fiber system (with cylinders),
 ## apply RSA to get a non-overlapping (hardcore) configuration
 	
@@ -23,6 +26,7 @@ F <- simPoissonSystem(theta=list("size"=list(0.075)),
 S2 <- rsa(S,F,verbose=TRUE)
 
 ## Ferrit (2nd. phase shown as gray spheres)
-#library(rgl)
-#open3d()
-#cylinders3d(S2, box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF"))
+# library(rgl)
+# open3d()
+# cylinders3d(S2, box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF"))
+}

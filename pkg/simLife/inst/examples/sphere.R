@@ -1,9 +1,12 @@
+# remove!
+\dontrun{
+	
 ## Simulate a particle system by spheres and densified clusters 
 ## Generate a non-overlapping configuration of spheres by RSA
 
 ## MS-Windows only
-#library(parallel)
-#options(mc.cores=2L)
+# library(parallel)
+# options(mc.cores=2L)
 
 library(unfoldr)
 
@@ -69,4 +72,5 @@ RET <- densifyCluster(S2, CLUST, ctrl, weight=20)
 #	drawSpheres(x,box=box,col=cols)
 #	invisible(getSphereProjection(x,draw=TRUE))	
 #}))
+}
 
