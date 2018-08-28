@@ -1,6 +1,7 @@
 ## Simulation of individual defect times	
 \dontrun{
 	
+library(simLife)
 data(AL2MC_20p_k10_F2p_S)
 data(AL2MC_20p_k10_F2p_CL)
 
@@ -11,9 +12,11 @@ opt <- list("vickers"=107,"distTol"=0.001,
 
 ## simulation parameter	
 par <- list("P"=c(0.01,10^12,10,108,-14,0.01),
-			"F"=c(0.01,10^10,10,100,-13,0.01))	
+			"F"=c(0.01,10^10,10,100,-13,0.01),
+			"const"=NULL)	
 
-## simulate times	
+## simulate times
+#debug(simTimes)
 CLT <- simTimes(S,par,vickers=opt$vickers,stress=125)
 
 ## times
