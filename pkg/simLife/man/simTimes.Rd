@@ -55,7 +55,7 @@ par <- list("P"=c(0.01,10^12,10,108,-14,0.01),
 			"const"=NULL)	
 
 ## simulate times
-debug(simTimes)
+#debug(simTimes)
 CLT <- simTimes(S,par,vickers=opt$vickers,stress=125)
 
 ## times

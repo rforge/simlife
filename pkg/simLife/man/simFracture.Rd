@@ -65,7 +65,8 @@ opt <- list("vickers"=107,"distTol"=0.25,
 		"pointsConvHull"=10, "scale"=1e+06,"pl"=101)
 
 par <- list("P"=c(0.01,10^12,10,105,-13,0.01),
-			"F"=c(0.01,10^12,10,98,-12,0.01))
+			"F"=c(0.01,10^12,10,98,-12,0.01),
+			"const"=NULL)
 
 # stress amplitude applied	
 stress <- 110
