@@ -31,12 +31,13 @@ projected fiber (spherocylinder).
 \examples{
 \dontrun{
 
-library(simLife)
+library(rgl)
 library(unfoldr)
+library(simLife)
 
 ## Not on MS-Windows	
-library("parallel")
-options(mc.cores=2L)
+#library("parallel")
+#options(mc.cores=2L)
 
 lam <- 35
 box <- list("xrange"=c(0,3),"yrange"=c(0,3),"zrange"=c(0,9))
