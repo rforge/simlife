@@ -47,11 +47,15 @@ center point) which within all objects belong to this region, \code{interior} wh
 the box boundaries of the simulation box.
 }
 \examples{
-## Load a particle system
-## and simulate its defect accumulation
 \dontrun{
-## primary particles and secondary phase (ferrit)
+
+## Simulate a defect accumulation
+## of a particle system
+	
+## primary particles (as prolate spheroids)
+## and secondary phase (as spheres)
 data(AL2MC_20p_k10_F2p_S)
+
 ## which is clustered and densified according to CL 
 ## additional predefined clustered regions
 data(AL2MC_20p_k10_F2p_CL)
@@ -64,9 +68,9 @@ opt <- list("vickers"=107,"distTol"=0.25,
 		"inAreafactor"=1.56, "outAreafactor"=1.43, 
 		"pointsConvHull"=10, "scale"=1e+06,"pl"=101)
 
-par <- list("P"=c(0.01,10^12,10,105,-13,0.01),
-			"F"=c(0.01,10^12,10,98,-12,0.01),
-			"const"=NULL)
+par <- list("P"=c(0.01,10,0.5,80,-15,2),
+		"F"=c(0,0,0,105,-12,1),
+		"const"=NULL)
 
 # stress amplitude applied	
 stress <- 110
@@ -99,10 +103,11 @@ L <- plotDefectAcc(RET,last.path=FALSE)
 dev.new()
 L <- plotDefectAcc(RET,last.path=TRUE)
 
-## plot last 
-## get particle id numbers of last cluster
+## 3D visualization of final defect projection area 
+# library(unfoldr)
 # qid <- LR$id
 # spheroids3d(S[qid],box=box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF"))
+
 ## drawing only last cluster leading to failure
 # drawDefectProjections(S,list(LR))
 }

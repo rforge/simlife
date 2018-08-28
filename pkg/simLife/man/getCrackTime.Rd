@@ -7,7 +7,7 @@
 getCrackTime(theta, a, b, stress, vickers, p, const)
 }
 \arguments{
-\item{theta}{colatitude angle}
+\item{theta}{polar angle}
 
 \item{a}{axis length (axis orthogonal to rotational axis)}
 
