@@ -242,6 +242,21 @@ getSphereProjection <- function(S, draw=TRUE, conv = TRUE, np=20) {
 #' @rdname simTimes
 #' @export
 simTimes <- function(S, param, vickers, stress, verbose = FALSE) {
+	nms <- c("P","F","const")
+	it <- pmatch(nms,names(param))
+	if(length(it) == 0L || anyNA(it))
+	 stop(paste0("`param` is list of named arguments possibly `NULL`: ", paste(nms, collapse = ", ")))
+ 	def <- list("Em"=68.9,"Ef"=400,"nc"=28.2,"nu"=0.33,
+		 	    "pf"=0.138,"nE"=NULL,"sigref"=276,"Vref"=5891)	
+	param$const <-
+	 if(is.null(param$const)) def
+	 else {				
+		it <- which(is.na(pmatch(names(def),names(param$const))))
+		if(length(it) > 0L)
+		 append(param$const,def[it])
+	 	else def
+	 }	
+	
 	## sim times
 	logpf <- try(log(1/param$const$pf),silent=TRUE)
 	if(inherits(logpf,"try-error"))

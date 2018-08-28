@@ -180,7 +180,7 @@
 #' @author M. Baaske 
 #' @rdname simCLuster
 #' @export
-simCluster <- function(S, CL, cond = list("eps" = 0.0, "minSize" = 1L),
+simCluster <- function(S, CL, cond = list("eps" = 1e-6, "minSize" = 1L),
 				check_overlap = FALSE, verbose = FALSE, pl = 0L)
 {
 	# check arguments for 'cond'

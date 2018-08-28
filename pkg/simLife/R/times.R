@@ -60,7 +60,7 @@ simCrackTime.prolate <- function(S,stress,vickers,param,fun=lapply) {
 		theta <- .getAngle(acos(E$u[3]))
 		stopifnot(is.numeric(theta))
 		#cat("theta: ",theta," a: ",E$ab[1]," b: ",E$ab[2],"\n")
-		uv[1] <- getCrackTime(theta,E$ab[1],E$ab[2],stress,vickers,param$P,param$const)
+		uv[1] <- getCrackTime(theta,E$acb[1],E$acb[3],stress,vickers,param$P,param$const)
 		uv[2] <- getDelamTime(E,stress,param$P)
 		list("id"=E$id,"U"=uv[1],"V"=uv[2],
 			 "T"=min(uv[1],uv[2]),"B"=ifelse(uv[1]<uv[2],0,1),"A"=0,"label"=label)
@@ -74,16 +74,16 @@ simCrackTime.prolate <- function(S,stress,vickers,param,fun=lapply) {
  fun(S,simT)
 }
 
-#' @method simCrackTime cylinder
+#' @method simCrackTime cylinders
 #' @export
-simCrackTime.cylinder <- function(S,stress,vickers,param,fun=lapply) {
+simCrackTime.cylinders <- function(S,stress,vickers,param,fun=lapply) {
  simT <- function(E) {
 	uv <- numeric(2) # [u,v]
 	label <- attr(E,"label")
 	if(label == "P") {
 		theta <- .getAngle(acos(E$u[3]))
 		stopifnot(is.numeric(theta))
-		uv[1] <- getCrackTime(theta,E$r,0.5*E$length,stress,vickers,param$P,param$const)
+		uv[1] <- getCrackTime(theta,E$r,0.5*E$h,stress,vickers,param$P,param$const)
 		uv[2] <- getDelamTime(E,stress,param$P)
 		list("id"=E$id,"U"=uv[1],"V"=uv[2],
 				"T"=min(uv[1],uv[2]),"B"=ifelse(uv[1]<uv[2],0,1),"A"=0,"label"=label)
@@ -97,9 +97,9 @@ simCrackTime.cylinder <- function(S,stress,vickers,param,fun=lapply) {
   fun(S,simT)
 }
 
-#' @method simCrackTime sphere
+#' @method simCrackTime spheres
 #' @export
-simCrackTime.sphere <- function(S,stress,vickers,param,fun=lapply) {
+simCrackTime.spheres <- function(S,stress,vickers,param,fun=lapply) {
  simT <- function(E) {
 	## always delamination for spheres
 	label <- attr(E,"label")
@@ -169,8 +169,8 @@ getCrackTime<-function(theta,a,b,stress,vickers,p,const){
 #' time for debonding of the considered object.
 #'
 #' @param stress	stress level
-#' @param E			the object, i.e. spheroid, cylinder, sphere
-#' @param param	    simulation parameter vector
+#' @param E			object of class "\code{oblate}", "\code{prolate}", "\code{cylinders}", "\code{spheres}"
+#' @param param	    simulation parameter vector, see details
 #' @param inF		weightening factor for inner defect projection
 #' @param outF		weightening factor for outer defect projection
 #'
