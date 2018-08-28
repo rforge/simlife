@@ -1,4 +1,3 @@
-\dontrun{
 ## Simulate a particle system by spheres and densified clusters 
 ## Generate a non-overlapping configuration of spheres by RSA
 
@@ -31,7 +30,7 @@ ctrl <- list(threshold.stop=0.01, max.call=5000, verbose=FALSE)
 RET <- densifyCluster(S2, CLUST, ctrl, weight=20)
 
 ####################################################################
-## 3D visualization of densified sphere clusters
+## Optional: 3D visualization of densified sphere clusters
 ####################################################################
 
 ## get the densified cluster
@@ -68,6 +67,4 @@ RET <- densifyCluster(S2, CLUST, ctrl, weight=20)
 #	drawSpheres(x,box=box,col=cols)
 #	invisible(getSphereProjection(x,draw=TRUE))	
 #}))
-
-}
 
