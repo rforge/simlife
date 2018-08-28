@@ -132,7 +132,7 @@ simCrackTime.spheres <- function(S,stress,vickers,param,fun=lapply) {
 #' when generating fracture times dependent on their tendency to be more or less oriented towards the
 #' main load direction.
 #'
-#' @param theta		colatitude angle
+#' @param theta		polar angle
 #' @param a			axis length (axis orthogonal to rotational axis)
 #' @param b			rotational axis length
 #' @param stress	stress level
