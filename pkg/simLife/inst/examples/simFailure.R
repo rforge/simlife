@@ -1,9 +1,10 @@
 \dontrun{
 
-## Load a particle system
-## and simulate its defect accumulation	
+## Simulate a defect accumulation
+## of a particle system
 	
-## primary particles and secondary phase (ferrit)
+## primary particles (as prolate spheroids)
+## and secondary phase (as spheres)
 data(AL2MC_20p_k10_F2p_S)
 
 ## which is clustered and densified according to CL 
@@ -53,10 +54,11 @@ L <- plotDefectAcc(RET,last.path=FALSE)
 dev.new()
 L <- plotDefectAcc(RET,last.path=TRUE)
 
-## plot last 
-## get particle id numbers of last cluster
-qid <- LR$id
-spheroids3d(S[qid],box=box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF"))
+## 3D visualization of final defect projection area 
+# library(unfoldr)
+# qid <- LR$id
+# spheroids3d(S[qid],box=box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF"))
+
 ## drawing only last cluster leading to failure
-drawDefectProjections(S,list(LR))
+# drawDefectProjections(S,list(LR))
 }

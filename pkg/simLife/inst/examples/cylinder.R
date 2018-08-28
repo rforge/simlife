@@ -1,8 +1,10 @@
 \dontrun{
 
-library(rgl)
+## Simulate Poisson cylinder system,
+## generate a non-overlapping system by RSA,
+## densify a cluster of cylinders
+
 library(unfoldr)
-library(simLife)
 
 ## Not on MS-Windows	
 #library("parallel")
@@ -24,9 +26,11 @@ F <- simPoissonSystem(list("size"=list(0.075)), lam=5, size="const",
 
 ## apply RSA
 S2 <- rsa(S,F,pl=101,verbose=TRUE)
+####################################################################
+## Optional: 3D visualization of cylinder projection areas
+####################################################################
 
-## draw some projection
-#require("rgl")
+#require(rgl)
 #id <- c(1,5,9,32,10)
 #cols <- c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF")
 #cylinders3d(S2[id], box, col=cols)	
@@ -45,7 +49,10 @@ ctrl <- list(threshold.stop=0.01,max.call=5000,verbose=FALSE)
 RET <- densifyCluster(S2, CLUST, ctrl, weight=10, cl = NULL)	
 G <- RET$cluster
 
-## draw original cluster
+####################################################################
+## Optional: 3D visualization of densified sphere clusters
+####################################################################
+
 #open3d()
 #lapply(CLUST,function(x) cylinders3d(S2[x$id],box=box,col=cols))	
 #X <- do.call(rbind,lapply(CLUST, function(x) c(x$center,x$r)))

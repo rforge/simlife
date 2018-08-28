@@ -1,6 +1,8 @@
-## Simulate a fiber system and apply RSA to
-## obtain a non-overlapping configuration
+## Simulate a fiber system (with cylinders),
+## apply RSA to get a non-overlapping (hardcore) configuration
 	
+library(unfoldr)
+
 lam <- 5
 box <- list("xrange"=c(0,3),"yrange"=c(0,3),"zrange"=c(0,9))
 
@@ -21,8 +23,6 @@ F <- simPoissonSystem(theta=list("size"=list(0.075)),
 S2 <- rsa(S,F,verbose=TRUE)
 
 ## Ferrit (2nd. phase shown as gray spheres)
-#require("rgl")
-#cols <- c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF")
-
+#library(rgl)
 #open3d()
-#cylinders3d(S2, box, col=cols)
+#cylinders3d(S2, box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF"))
