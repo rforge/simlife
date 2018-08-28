@@ -11,14 +11,18 @@ theta <- list("size"=list(0.95),
 
 ## primary phase: fibers
 S <- simPoissonSystem(theta,lam,size="const",shape="const",
-		orientation="rbetaiso",box=box,pl=1,label="P")
+		type="cylinders",box=box,pl=1,label="P")
 
 ## secondary phase: particles as spheres
-F <- simPoissonSystem(list(list(0.075)),lam=5,size="const",box=box, pl=1, label="F")
-## apply RSA
-S2 <- rsa(S,box,F=F,pl=101,verbose=TRUE)
+F <- simPoissonSystem(theta=list("size"=list(0.075)),
+		type="spheres",lam=5,size="const",box=box, pl=1, label="F")
 
+## apply RSA
+S2 <- rsa(S,F,verbose=TRUE)
+
+## Ferrit (2nd. phase shown as gray spheres)
 #require("rgl")
 #cols <- c("#0000FF","#00FF00","#FF0000","#FF00FF","#FFFF00","#00FFFF")
+
 #open3d()
 #cylinders3d(S2, box, col=cols)

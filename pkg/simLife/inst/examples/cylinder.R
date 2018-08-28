@@ -2,6 +2,7 @@
 
 library(rgl)
 library(unfoldr)
+library(simLife)
 
 ## Not on MS-Windows	
 #library("parallel")
