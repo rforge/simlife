@@ -56,21 +56,26 @@ simCrackTime.prolate <- function(S,stress,vickers,param,fun=lapply) {
   simT <- function(E) {
 	uv <- numeric(2) # [u,v]
 	label <- attr(E,"label")
-	if(label == "P") {
-		theta <- .getAngle(acos(E$u[3]))
+	
+	if(label == "P")
+	{
+		theta <- try(.getAngle(acos(E$u[3])),silent=TRUE)
 		stopifnot(is.numeric(theta))
-		#cat("theta: ",theta," a: ",E$ab[1]," b: ",E$ab[2],"\n")
+		
 		uv[1] <- getCrackTime(theta,E$acb[1],E$acb[3],stress,vickers,param$P,param$const)
 		uv[2] <- getDelamTime(E,stress,param$P)
+		
 		list("id"=E$id,"U"=uv[1],"V"=uv[2],
 			 "T"=min(uv[1],uv[2]),"B"=ifelse(uv[1]<uv[2],0,1),"A"=0,"label"=label)
+	 
 	} else {
+	
 		## always delamination for ferrit phase
 		uv[2] <- getDelamTime(E,stress,param$F)
 		list("id"=E$id,"U"=Inf,"V"=uv[2],
 			 "T"=uv[2],"B"=1,"A"=0,"label"=label)
 	}
- }
+ } 
  fun(S,simT)
 }
 

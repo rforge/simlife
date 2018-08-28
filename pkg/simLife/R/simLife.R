@@ -266,6 +266,11 @@ simTimes <- function(S, param, vickers, stress, verbose = FALSE) {
 	 param$const$nE <- sqrt(tmp)
 	else stop("Constant nE is < 0.")
 
+	if(is.null(param$P) || length(param$P) != 6L)
+	 stop("Parameter for 1st. 'P' phase must not be null.")
+	nF <- length(sapply(S,function(x) attr(x,"label") == "F"))
+	if(nF > 0L && is.null(param$F))
+	 stop("Missing parameters for 2nd. phase with label 'F'.")
 	CLT <- simCrackTime(S,stress,vickers,param)
 
 	## sort ascending by times
