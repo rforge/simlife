@@ -7,10 +7,18 @@
 #include <list>
 #include "GeometricPrimitives.h"
 
+#ifdef ENABLE_NLS
+#include <libintl.h>
+#define _(String) dgettext ("simLife", String)
+#else
+#define _(String) (String)
+#endif
+
+
+
 using namespace std;
 
 #define M_PI_4		0.78539816339744830962	/* pi/4 */
-#define GET_OBJECT_CLASS(RS) translateChar(asChar(getAttrib( (RS), R_ClassSymbol)))
 
 extern SEXP getListElement (SEXP list, const char *str);
 

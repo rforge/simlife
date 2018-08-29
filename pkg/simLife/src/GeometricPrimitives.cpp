@@ -200,7 +200,7 @@ double contactRadius(double *t, double *rr, double li, double lj, double ri, dou
 }
 
 /** cylinder contact radius */
-void ContactRadius(double *u, double *li, double *lj, double *ri, double *rj,double *R, double *d, double *rmax)
+void ContactRadius(double *u, double *li, double *lj, double *ri, double *rj, double *R, double *d, double *rmax)
 {
   double m[NDIM][NDIM];
   COPY_R_MATRIX(m,R);
