@@ -278,8 +278,9 @@ void intern_simDefect( typename STGM::ClusterList<T>::Type &cl,
   Rboolean stopit = FALSE;
   STGM::CDefect<T> *head, *last;
 
-  double minDist=0,
-         MPI4 = info.distTol*std::sqrt(M_PI_4); // to compare to minDist (distTol is weight factor < 1)
+  double minDist=0.0;
+  /* // to compare to minDist (distTol is weight factor < 1) */
+  double MPI4 = info.distTol*std::sqrt(M_PI_4);
   int i=1, k=0, nclust=0, N=converter.N;
 
   head = converter(0);
