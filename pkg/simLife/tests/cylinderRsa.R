@@ -21,7 +21,7 @@ F <- simPoissonSystem(list("size"=list(0.075)), lam=5, size="const",
 		type="spheres",box=box, pl=1, label="F")
 
 ## apply RSA
-S2 <- rsa(S,F,pl=1,verbose=TRUE)
+S2 <- rsa(S,F,verbose=TRUE)
 length(S2)
 
 

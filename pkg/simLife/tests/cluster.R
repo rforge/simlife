@@ -12,7 +12,7 @@ S <- simPoissonSystem(theta,lam=15,size="const",
 		box=box,type="spheres",pl=1,label="P")
 
 # rsa
-S2 <- rsa(S,pl=1,verbose=TRUE)
+S2 <- rsa(S,verbose=TRUE)
 
 # project some spheres
 id <- c(1,5,9,32,10)
@@ -29,5 +29,6 @@ CLUST <- simCluster(S2, CL, verbose=TRUE)
 
 # densify
 ctrl <- list(threshold.stop=0.01, max.call=100, verbose=FALSE)
-densifyCluster(S2, CLUST, ctrl, weight=100)
+RET <- densifyCluster(S2, CLUST, ctrl, weight=100)
+RET[[length(RET)]]
 
