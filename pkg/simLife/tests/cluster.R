@@ -29,5 +29,5 @@ CLUST <- simCluster(S2, CL, verbose=TRUE)
 
 # densify
 ctrl <- list(threshold.stop=0.01, max.call=100, verbose=FALSE)
-RET <- densifyCluster(S2, CLUST, ctrl, weight=100)
-length(RET)
+densifyCluster(S2, CLUST, ctrl, weight=100)
+
