@@ -88,8 +88,8 @@ G <- RET$cluster
 #lapply(CLUST,function(x) cylinders3d(S2[x$id],box=box,col=cols))	
 #X <- do.call(rbind,lapply(CLUST, function(x) c(x$center,x$r)))
 #invisible(lapply(CLUST, function(x) rgl::spheres3d(X[,1:3],radius=X[,4],col="gray",alpha=0.2)))
-
-## draw densified cluster
+#
+### draw densified cluster
 #open3d()
 #invisible(lapply(G,function(x) { cylinders3d(x,box=box,col=cols) }))
 #invisible(lapply(CLUST, function(x) rgl::spheres3d(X[,1:3],radius=X[,4],col="gray",alpha=0.2)))
