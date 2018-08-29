@@ -17,3 +17,7 @@ Changes with 0.5
  
 4) The function 'simCluster' now requires a random ball system as an input which defines the cluster regions
  of some particle or fibre system.
+ 
+5) Note that some names have changed. The 'length' element in a cylinder system has now changed to height 'h' since this
+ naming is more precise in what it means. For prolate and oblate spheroids the semi-axis length now are
+ stored as a vector of length three under the name 'acb'. For any further details please see the manual. 
