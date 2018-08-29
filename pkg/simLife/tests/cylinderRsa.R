@@ -1,6 +1,7 @@
 ## Simulate Poisson cylinder system,
 ## generate a non-overlapping system by RSA,
 
+library(simLife)
 library(unfoldr)
 library(parallel)
 options(mc.cores=2L)
