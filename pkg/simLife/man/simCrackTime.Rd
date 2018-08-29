@@ -9,9 +9,11 @@ simCrackTime(S, stress, vickers, param, fun = lapply)
 \arguments{
 \item{S}{geometry objects system}
 
-\item{stress}{the applied stress level}
+\item{stress}{stress level for generation of failure times}
 
 \item{vickers}{Vickers hardness, see details}
+
+\item{param}{list of parameter vectors for simulation of failure times for both phases}
 
 \item{fun}{optional, either \code{lapply} (default) or parllel processing by \code{mclapply}}
 }
