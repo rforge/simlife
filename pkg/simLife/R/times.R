@@ -22,8 +22,9 @@
 #' the defect type "delamination" is considered.
 #'
 #' @param S				   geometry objects system
-#' @param stress		   the applied stress level
+#' @param stress		   stress level for generation of failure times
 #' @param vickers   	   Vickers hardness, see details
+#' @param param	 		   list of parameter vectors for simulation of failure times for both phases
 #' @param fun 			   optional, either \code{lapply} (default) or parllel processing by \code{mclapply}
 #'
 #' @return  a list with the following elements:
