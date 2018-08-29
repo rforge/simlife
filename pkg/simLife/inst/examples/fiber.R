@@ -1,5 +1,5 @@
-# remove!
 \dontrun{
+# remove later !
 	
 ## Simulate a fiber system (with cylinders),
 ## apply RSA to get a non-overlapping (hardcore) configuration
