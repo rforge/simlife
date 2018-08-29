@@ -1,6 +1,3 @@
-# remove!
-\dontrun{
-	
 ## Simulate a particle system by spheres and densified clusters 
 ## Generate a non-overlapping configuration of spheres by RSA
 
@@ -13,7 +10,8 @@ library(unfoldr)
 theta <- list("size"=list(0.1))
 box <- list("xrange"=c(0,3),"yrange"=c(0,3),"zrange"=c(0,9))
 
-S <- simPoissonSystem(theta,lam=15,size="const", box=box,type="spheres",pl=1,label="P")
+S <- simPoissonSystem(theta,lam=15,size="const",
+		box=box,type="spheres",pl=1,label="P")
 
 # rsa
 S2 <- rsa(S,pl=1,verbose=TRUE)
@@ -72,5 +70,4 @@ RET <- densifyCluster(S2, CLUST, ctrl, weight=20)
 #	drawSpheres(x,box=box,col=cols)
 #	invisible(getSphereProjection(x,draw=TRUE))	
 #}))
-}
 

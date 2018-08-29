@@ -30,6 +30,5 @@ W <- woehler(S, CL=NULL, par, opt, stress=rep(stress,each=nsim),fun=mclapply,cl=
 woehlerDiagram(W, yrange=c(70,145))
 
 ## do not forget to stop cluster if used 
-if(!is.null(cl)) stopCluster(cl)
-	
+if(!is.null(cl)) stopCluster(cl)	
 }
