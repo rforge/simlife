@@ -647,9 +647,8 @@ plotDefectAcc <- function(CL,last.path=FALSE,log.axis="x",use.col=TRUE,main="",.
 #' @param param	    	   parameter list for random generation of individual failure times
 #' @param opt			   control parameters, see \code{\link{simTimes}}
 #' @param stress		   list of stress levels
-#' @param fun 			   optional, if \code{fun=mclapply} use \code{\link[parallel]{mclapply}}
-#' 						     for simulations
-#' @param cl			   optional, parallel cluster object, see 'snow'
+#' @param fun			   optional, either \code{lapply} (default) or parllel processing by \code{mclapply}
+#' @param cl			   optional, parallel cluster object
 #'
 #' @return				   matrix of failure times, first colunm corresponds to the times
 #' 						   and the second to the stress level

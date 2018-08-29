@@ -23,10 +23,8 @@
 #'
 #' @param S				   geometry objects system
 #' @param stress		   the applied stress level
-#' @param vickers   	   Vickers hardness
-#' @param param	 		   simulation parameter list of parameter vectors for both phases
-#' @param fun 			   optional, if \code{fun=mclapply} use \code{\link[parallel]{mclapply}}
-#' 						     for to parallelize simulations
+#' @param vickers   	   Vickers hardness, see details
+#' @param fun 			   optional, either \code{lapply} (default) or parllel processing by \code{mclapply}
 #'
 #' @return  a list with the following elements:
 #' 			\itemize{

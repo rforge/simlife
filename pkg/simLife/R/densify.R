@@ -207,6 +207,8 @@ simCluster <- function(S, CL, cond = list("eps" = 1e-6, "minSize" = 1L),
 		warning(paste("Overlaps detected in cluster:",paste0("",unlist(i),".",collapse=","),"Consider to increase weight parameter and re-run the densification."))
 	
 	## update interior
+	## this now has to be called by the user!
+	
 	#ids <- unfoldr::updateIntersections(A)
 	
 	for(k in 1:length(A)) {
@@ -277,10 +279,10 @@ simCluster <- function(S, CL, cond = list("eps" = 1e-6, "minSize" = 1L),
 #' @param F					non-overlapping particle system
 #' @param CL				cluster list, defining the different cluster regions
 #' @param ctrl  			control arguments passed to function \code{GenSA}
-#' @param weight   			optional: weight factor \code{weight=10} (default)
-#' @param info			    optional: logical, if TRUE return result from \code{GenSA} call
-#' @param fun 			    optional, if \code{fun=mclapply} use \code{\link[parallel]{mclapply}}
-#' @param cl 				optional: cluster object, see package \code{snow}
+#' @param weight   			optional, weight factor \code{weight=10} (default)
+#' @param info			    optional, logical, if TRUE return result from \code{GenSA} call
+#' @param fun 			    optional, either \code{lapply} (default) or parllel processing by \code{mclapply}
+#' @param cl 				optional, parallel cluster object
 #'
 #' @return					a list of all objects (including newly densified regions) named \code{S}
 #' 						    and a named list of clustered regions \code{cluster}
@@ -306,20 +308,26 @@ densifyCluster <- function(F, CL, ctrl, weight = 10, info = FALSE, fun = lapply,
 		clust <- L$clust
 		maxD <- sapply(S,function(s) sqrt(sum((s$center-clust$center)^2)))
 		# apply GenSA
-		out <- tryCatch({
-					GenSA::GenSA(par=0.5*maxD, lower=rep(0,length(S)), upper=0.9*maxD,
-				    	 fn = FUNCTION, control = ctrl, S = S, clust = clust, weight = weight)
-					},
-				  error=function(e) structure(e, error=e) )
+		tryCatch({
+			out <- GenSA::GenSA(par=0.5*maxD, lower=rep(0,length(S)), upper=0.9*maxD,
+				 fn = FUNCTION, control = ctrl, S = S, clust = clust, weight = weight)
+	 			}, error = function(e) {
+					structure(e, error=e) 
+					}
+				)
+		
 		# do nothing in case of error
-		if(is.null(attr(out,"error"))) {
-		 for(i in 1:dim)
-			 if(attr(S[[i]],"label")!="F")
-			   S[[i]]$center <- S[[i]]$center-out$par[i]*((S[[i]]$center-clust$center)/sqrt(sum((S[[i]]$center-clust$center)^2)))
+		if(inherits(out,"error")) {
+			warning("'GenSA' optimization routine failed with error.")		 
+		} else {
+			for(i in 1:dim)
+				# do not move (densify) 2nd. phase
+				if(attr(S[[i]],"label") != "F")
+					S[[i]]$center <- S[[i]]$center-out$par[i]*((S[[i]]$center-clust$center)/sqrt(sum((S[[i]]$center-clust$center)^2)))
 		}
-
-		msg <- if(info) list("out"=out,"val"=out$value,"maxD"=maxD) else NULL
-		structure(S, "interior"=TRUE, "info"=msg)
+		
+		structure(S, "interior"=TRUE,
+			"info"=if(info) list("out"=out,"val"=out$value,"maxD"=maxD) else NULL)
 	}
 
 	FUN <- NULL

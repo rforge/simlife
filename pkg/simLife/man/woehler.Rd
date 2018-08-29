@@ -17,10 +17,9 @@ woehler(S, CL, param, opt, stress, fun = lapply, cl = NULL)
 
 \item{stress}{list of stress levels}
 
-\item{fun}{optional, if \code{fun=mclapply} use \code{\link[parallel]{mclapply}}
-for simulations}
+\item{fun}{optional, either \code{lapply} (default) or parllel processing by \code{mclapply}}
 
-\item{cl}{optional, parallel cluster object, see 'snow'}
+\item{cl}{optional, parallel cluster object}
 }
 \value{
 matrix of failure times, first colunm corresponds to the times
@@ -70,8 +69,7 @@ W <- woehler(S, CL=NULL, par, opt, stress=rep(stress,each=nsim),fun=mclapply,cl=
 woehlerDiagram(W, yrange=c(70,145))
 
 ## do not forget to stop cluster if used 
-if(!is.null(cl)) stopCluster(cl)
-	
+if(!is.null(cl)) stopCluster(cl)	
 }
 }
 \author{

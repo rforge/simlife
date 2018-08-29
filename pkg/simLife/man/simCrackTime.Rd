@@ -11,12 +11,9 @@ simCrackTime(S, stress, vickers, param, fun = lapply)
 
 \item{stress}{the applied stress level}
 
-\item{vickers}{Vickers hardness}
+\item{vickers}{Vickers hardness, see details}
 
-\item{param}{simulation parameter list of parameter vectors for both phases}
-
-\item{fun}{optional, if \code{fun=mclapply} use \code{\link[parallel]{mclapply}}
-for to parallelize simulations}
+\item{fun}{optional, either \code{lapply} (default) or parllel processing by \code{mclapply}}
 }
 \value{
 a list with the following elements:
