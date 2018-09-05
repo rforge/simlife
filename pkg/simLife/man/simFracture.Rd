@@ -122,7 +122,8 @@ L <- plotDefectAcc(RET,last.path=FALSE)
 dev.new()
 L <- plotDefectAcc(RET,last.path=TRUE)
 
-## 3D visualization of final defect projection area 
+## 3D visualization of final defect projection area
+library(rgl)
 library(unfoldr)
 qid <- LR$id
 open3d()

@@ -60,9 +60,9 @@ par <- list("P"=c(0.01,6,0.5,75,-15,1.5),
 nsim <- 10
 stress <- as.list(seq(from=90,to=140,by=10))
 
-#cl <- NULL
+cl <- NULL
 ## might use a MPI/SOCKS/PSOCKS cluster objects
-cl <- makeCluster(8)
+#cl <- makeCluster(8)
 	
 # the following code may take some time
 W <- woehler(S, CL=NULL, par, opt, stress=rep(stress,each=nsim),fun=lapply,cl=cl)
