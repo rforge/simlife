@@ -124,7 +124,7 @@ SEXP convexHull(SEXP R_points) {
  */
 SEXP GetPointsForConvexHull(SEXP R_ellipses, SEXP R_n) {
   int i=0, k=0, N = length(R_ellipses),
-      n = asInteger(AS_INTEGER(R_n));
+      n = INTEGER(AS_INTEGER(R_n))[0];
   int m = N*n;
 
   SEXP R_points = R_NilValue;
@@ -183,7 +183,7 @@ SEXP GetSpheroidProjection(SEXP R_spheroids, SEXP R_crack_type) {
 SEXP GetSphereProjection(SEXP R_s, SEXP R_np) {
   STGM::Spheres spheres = convert_C_Spheres(R_s);
   int n = spheres.size(),
-      np = asInteger(AS_INTEGER(R_np));
+      np = INTEGER(AS_INTEGER(R_np))[0];
 
   double area = 0;
   SEXP R_ret, R_p;
@@ -217,8 +217,8 @@ SEXP GetSphereProjection(SEXP R_s, SEXP R_np) {
  */
 SEXP GetCylinderProjection(SEXP R_cylinders, SEXP R_crack_type,SEXP R_np) {
   STGM::Cylinders cylinders = convert_C_Cylinders(R_cylinders);
-  int n = cylinders.size(),
-      type = 0, m = 0, np = asInteger(AS_INTEGER(R_np));
+  int n = cylinders.size(), type = 0, m = 0,
+	  np = INTEGER(AS_INTEGER(R_np))[0];
 
   double area = 0;
   SEXP R_ret, R_p;

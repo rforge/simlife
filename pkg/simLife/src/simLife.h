@@ -227,9 +227,9 @@ struct Converter {
   }
 
   STGM::CDefect<Type> * operator() (int i) {
-     id   = INTEGER( getListElement(VECTOR_ELT(Rcl,i), "id"))[0];
-     type = INTEGER( getListElement(VECTOR_ELT(Rcl,i), "B") )[0];
-     time =    REAL( getListElement(VECTOR_ELT(Rcl,i), "T") )[0];
+     id   = INTEGER( AS_INTEGER(getListElement(VECTOR_ELT(Rcl,i), "id")))[0];
+     type = INTEGER( AS_INTEGER(getListElement(VECTOR_ELT(Rcl,i), "B") ))[0];
+     time =    REAL( AS_NUMERIC(getListElement(VECTOR_ELT(Rcl,i), "T") ))[0];
 
      // convert object from R list
      Type sp = fun(VECTOR_ELT(Rs,id-1));
