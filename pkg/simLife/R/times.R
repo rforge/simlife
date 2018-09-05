@@ -85,10 +85,12 @@ simCrackTime.cylinders <- function(S,stress,vickers,param,fun=lapply) {
 	uv <- numeric(2) # [u,v]
 	label <- attr(E,"label")
 	if(label == "P") {
-		theta <- .getAngle(acos(E$u[3]))
+		theta <- try(.getAngle(acos(E$u[3])),silent=TRUE)
 		stopifnot(is.numeric(theta))
+		
 		uv[1] <- getCrackTime(theta,E$r,0.5*E$h,stress,vickers,param$P,param$const)
 		uv[2] <- getDelamTime(E,stress,param$P)
+		
 		list("id"=E$id,"U"=uv[1],"V"=uv[2],
 				"T"=min(uv[1],uv[2]),"B"=ifelse(uv[1]<uv[2],0,1),"A"=0,"label"=label)
 	} else {
