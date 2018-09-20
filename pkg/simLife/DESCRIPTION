@@ -1,7 +1,7 @@
 Package: simLife
 Title: Simulation of Fatigue Lifetimes
 Version: 0.5
-Date: 2018-09-05
+Date: 2018-09-20
 Authors@R: c(person("Markus Baaske", role = c("aut", "cre"),
 			 email = "markus.baaske@uni-jena.de"),
 			 person("Felix", "Ballani", role = c("aut","ctb"),
@@ -15,5 +15,5 @@ Imports: grDevices, graphics, stats, splancs
 Suggests: parallel, rgl, lattice, GenSA, unfoldr
 License: GPL (>= 3)
 Repository: CRAN
-LazyData: yes
+LazyData: no
 RoxygenNote: 6.1.0
