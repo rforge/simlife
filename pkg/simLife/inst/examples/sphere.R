@@ -56,9 +56,13 @@ RET <- densifyCluster(S2, CLUST, ctrl, weight=20)
 #			expand=1.0,xlen=0,xunit=0,ylen=0,yunit=0,zlen=0,zunit=0)
 #}	
 #
-### draw original clusters
+
+####################################################################
+## Optional: 3D visualization of original clustered regions 
+####################################################################
+
 #X <- do.call(rbind,lapply(CLUST, function(x) c(x$center,x$r)))
-#
+
 #open3d()
 #invisible(lapply(CLUST, function(x) rgl::spheres3d(X[,1:3],radius=X[,4],col="gray",alpha=0.2)))
 #lapply(CLUST,function(x) drawSpheres(S2[x$id],box=box,col=cols))	

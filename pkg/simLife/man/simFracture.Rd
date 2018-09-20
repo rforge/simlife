@@ -123,14 +123,14 @@ dev.new()
 L <- plotDefectAcc(RET,last.path=TRUE)
 
 ## 3D visualization of final defect projection area
-library(rgl)
-library(unfoldr)
-qid <- LR$id
-open3d()
-spheroids3d(S[qid],box=box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF"))
-
-## drawing only last cluster leading to failure
-drawDefectProjections(S,list(LR))
+#library(rgl)
+#library(unfoldr)
+#qid <- LR$id
+#open3d()
+#spheroids3d(S[qid],box=box, col=c("#0000FF","#00FF00","#FF0000","#FF00FF"))
+#
+### drawing only last cluster leading to failure
+#drawDefectProjections(S,list(LR))
 }
 }
 \author{
