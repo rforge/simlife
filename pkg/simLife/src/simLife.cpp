@@ -317,6 +317,7 @@ void intern_simDefect( typename STGM::ClusterList<T>::Type &cl,
       //T &scmp = head->m_object;
       jt = cl.begin(); endit = cl.end(); --endit;
 
+      //TODO: probably this loop could be run in parallel!
       for(k = 0; jt != endit; ++k )
       {
          last = *jt;
