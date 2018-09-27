@@ -111,7 +111,6 @@ SEXP convexHull(SEXP R_points) {
 
   UNPROTECT(1);
   return R_H;
-
 }
 
 /**
