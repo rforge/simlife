@@ -28,9 +28,9 @@
 #'   \item Y. Murakami (2002). Metal Fatigue: Effects of Small Defects and Nonmetallic Inclusions. Elsevier, Amsterdam.
 #'   \item J.W. Evans. Random and cooperative sequential adsorption. Rev. Mod. Phys., 65: 1281-1304, 1993.
 #'   \item M. Baaske, A. Illgen, A. Weidner, H. Biermann, F. Ballani (2018). Influence of ceramic particle and fibre reinforcement in metal-matrix-composites on the VHCF behaviour. Part I: Stochastic modelling and statistical inference. In: Christ, H.-J. (ed.), Fatigue of Materials at Very High Numbers of Loading Cycles.
-#'     Experimental Techniques - Mechanisms - Modeling and Fatigue Assessment. Springer, Heidelberg. In press.
+#'     Experimental Techniques - Mechanisms - Modeling and Fatigue Assessment. Springer Spektrum, Wiesbaden, pp. 319-342.
 #'   \item M. Baaske, A. Illgen, A. Weidner, H. Biermann, F. Ballani (2018). Influence of ceramic particle and fibre reinforcement in metal-matrix-composites on the VHCF behaviour. Part II: Stochastic modelling and statistical inference. In: Christ, H.-J. (ed.), Fatigue of Materials at Very High Numbers of Loading Cycles.
-#'     Experimental Techniques - Mechanisms - Modeling and Fatigue Assessment. Springer, Heidelberg. In press. 
+#'     Experimental Techniques - Mechanisms - Modeling and Fatigue Assessment. Springer Spektrum, Wiesbaden, pp. 295-318.
 #' }
 #'  
 #' @section :
