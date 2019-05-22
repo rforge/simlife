@@ -1,7 +1,7 @@
 Package: simLife
 Title: Simulation of Fatigue Lifetimes
-Version: 0.5.2
-Date: 2019-04-08
+Version: 0.5.3
+Date: 2019-05-22
 Authors@R: c(person("Markus Baaske", role = c("aut", "cre"),
 			 email = "mafr2007@gmail.com"),
 			 person("Felix", "Ballani", role = c("aut","ctb"),
